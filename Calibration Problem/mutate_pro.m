@@ -13,7 +13,7 @@ function new_groups = mutate_pro(groups)
             [~, mut_pos] = max(rand(size(idx)));
             temp = idx;
             temp(mut_pos) = idx(mut_pos) + ceil(6 * rand() - 3.5);
-			% If the shift is illegal, try again
+	    % If the shift is illegal, try again
             while temp(mut_pos) < 1 || temp(mut_pos) > 90
                 temp(mut_pos) = idx(mut_pos) + ceil(6*rand() - 3.5);
             end
