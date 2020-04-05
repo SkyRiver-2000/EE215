@@ -1,4 +1,5 @@
 clear;
+
 % Load the provided Datasets
 train_set = load('dataform_train.csv');
 test_set = load('dataform_testA.csv');
@@ -12,30 +13,37 @@ mean_cost = zeros(num_ind, max_iter + 1);
 tic;
 init_groups; % Implement group initiation
 for k = 2 : max_iter + 1
-	% Resort the group
+    % Resort the group
     [f, I] = sort(f, 'descend');
     groups = groups(I, :);
     p = cumsum(f) / sum(f);
     groups = select(p, groups);
+    
     % Implement cross between pairs
     for m = 1 : num_ind / 2
         [groups(2 * m - 1, :), groups(2 * m, :)] = match(groups(2 * m - 1, :), groups(2 * m, :), max(f(2 * m - 1), f(2 * m)), f);
     end
+    
     % Implement single mutation
-groups = mutate(groups);
-% Implement point transverse shifting
+    groups = mutate(groups);
+    
+    % Implement point transverse shifting
     groups = mutate_pro(groups);
+    
     % Compute the fitness and cost
     for i = 1 : num_ind
         [mean_cost(i, k), f(i)] = fitness(groups(i, :), train_set);
-End
-% Record the best individual in current generation
+    end
+    
+    % Record the best individual in current generation
     [best(k, 1), idx] = max(f);
-best_ind(k, :) = groups(idx, :);
-% Dynamically adjust the fitness of individuals
+    best_ind(k, :) = groups(idx, :);
+    
+    % Dynamically adjust the fitness of individuals
     f = (f - min(f)) / (max(f) - min(f)) + c; 
     c = ceta * c;
 end
+
 % Find the historically best individual and get the best solution
 [~, idx] = max(best);
 sample_points = find(best_ind(idx, :));
