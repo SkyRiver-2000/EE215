@@ -1,11 +1,11 @@
 function new_groups = mutate(groups)
 % Stochastic mutation on single points
     p_mut = 0.005; % The probability of mutation
-new_groups = groups;
+    new_groups = groups;
 
 % Determine if the mutation happens and implement mutation
-if_mut = rand(size(groups)) <= p_mut;
-new_groups(if_mut) = 1 - new_groups(if_mut);
+    if_mut = rand(size(groups)) <= p_mut;
+    new_groups(if_mut) = 1 - new_groups(if_mut);
 
 % 3-order polynomial interpolation needs at least 4 points
 % Re-mutate those individuals with vital errors
